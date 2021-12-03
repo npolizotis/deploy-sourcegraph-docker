@@ -51,8 +51,8 @@ services:
       # Uncomment / update the following line when using HTTPS with custom certficates
       # - '/LOCAL/KEY/PATH.key:/sourcegraph.key'
     ports:
-      - '0.0.0.0:80:80'
-      - '0.0.0.0:443:443'
+      - '0.0.0.0:8080:80'
+      #- '0.0.0.0:443:443'
     networks:
       - sourcegraph
     restart: always
@@ -457,24 +457,25 @@ services:
   # Ports exposed to other Sourcegraph services: 8080/TCP
   # Ports exposed to the public internet: none
   #
-  cadvisor:
-    container_name: cadvisor
-    image: 'index.docker.io/sourcegraph/cadvisor:3.32.0@sha256:0c5e4837e5b492da3aa2395eae7f2b94c6dd18a8f39a0c3ac8df2ac17ba5e2c5'
-    cpus: 1
-    mem_limit: '1g'
-    volumes:
-      - '/:/rootfs:ro'
-      - '/var/run:/var/run:ro'
-      - '/sys:/sys:ro'
-      - '/var/lib/docker/:/var/lib/docker:ro'
-      - '/dev/disk/:/dev/disk:ro'
-      # Uncomment to enable container monitoring on MacOS
-      # - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    networks:
-      - sourcegraph
-    restart: always
-    command:
-      - --port=8080
+  
+  # cadvisor:
+  #   container_name: cadvisor
+  #   image: 'index.docker.io/sourcegraph/cadvisor:3.32.0@sha256:0c5e4837e5b492da3aa2395eae7f2b94c6dd18a8f39a0c3ac8df2ac17ba5e2c5'
+  #   cpus: 1
+  #   mem_limit: '1g'
+  #   volumes:
+  #     - '/:/rootfs:ro'
+  #     - '/var/run:/var/run:ro'
+  #     - '/sys:/sys:ro'
+  #     - '/var/lib/docker/:/var/lib/docker:ro'
+  #     - '/dev/disk/:/dev/disk:ro'
+  #     # Uncomment to enable container monitoring on MacOS
+  #     - '/var/run/docker.sock:/var/run/docker.sock:ro'
+  #   networks:
+  #     - sourcegraph
+  #   restart: always
+  #   command:
+  #     - --port=8080
 
   # Description: Jaeger all-in-one instance
   # (https://www.jaegertracing.io/docs/1.17/getting-started/#all-in-one) for distributed tracing.
