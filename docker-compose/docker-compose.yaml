@@ -55,7 +55,7 @@ services:
       #- '0.0.0.0:443:443'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Serves the frontend of Sourcegraph via HTTP(S).
   #
@@ -100,7 +100,7 @@ services:
       - 'sourcegraph-frontend-0:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     depends_on:
       sourcegraph-frontend-internal:
         condition: service_healthy
@@ -137,7 +137,7 @@ services:
       - 'sourcegraph-frontend-internal-0:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     healthcheck:
       test: "wget -q 'http://127.0.0.1:3080/healthz' -O /dev/null || exit 1"
       interval: 5s
@@ -171,7 +171,7 @@ services:
       - 'gitserver-0:/data/repos'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     hostname: gitserver-0
 
   # Description: Backend for indexed text search operations.
@@ -194,7 +194,7 @@ services:
       - 'zoekt-0-shared:/data/index'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     hostname: zoekt-indexserver-0
   # Description: Backend for indexed text search operations.
   #
@@ -219,7 +219,7 @@ services:
       - 'zoekt-0-shared:/data/index'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     hostname: zoekt-webserver-0
 
   # Description: Backend for text search operations.
@@ -246,7 +246,7 @@ services:
       - 'searcher-0:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Rate-limiting proxy for the GitHub API.
   #
@@ -267,7 +267,7 @@ services:
       - JAEGER_AGENT_HOST=jaeger
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Handles conversion of uploaded precise code intelligence bundles.
   #
@@ -290,7 +290,7 @@ services:
       start_period: 60s
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Saved search query runner / notification service.
   #
@@ -311,7 +311,7 @@ services:
       - JAEGER_AGENT_HOST=jaeger
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Handles repository metadata (not Git data) lookups and updates from external code hosts and other similar services.
   #
@@ -333,7 +333,7 @@ services:
       - 'repo-updater:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Manages background processes.
   #
@@ -354,7 +354,7 @@ services:
       - 'worker:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Backend for syntax highlighting operations.
   #
@@ -375,7 +375,7 @@ services:
       start_period: 5s
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Backend for symbols operations.
   #
@@ -402,7 +402,7 @@ services:
       - 'symbols-0:/mnt/cache'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Prometheus collects metrics and aggregates them into graphs.
   #
@@ -422,7 +422,7 @@ services:
       - '0.0.0.0:9090:9090'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     environment:
       - 'SRC_FRONTEND_INTERNAL=sourcegraph-frontend-internal:3090'
 
@@ -450,7 +450,7 @@ services:
       - '0.0.0.0:3370:3370'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
   # Description: Publishes Prometheus metrics about Docker containers.
   #
@@ -474,7 +474,7 @@ services:
   #     - '/var/run/docker.sock:/var/run/docker.sock:ro'
   #   networks:
   #     - sourcegraph
-  #   restart: on-failure
+  #   restart: "no"
   #   command:
   #     - --port=8080
   
@@ -502,7 +502,7 @@ services:
       - '0.0.0.0:6832:6832'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     command: ['--memory.max-traces=20000']
     environment:
       - 'SAMPLING_STRATEGIES_FILE=/etc/jaeger/sampling_strategies.json'
@@ -528,7 +528,7 @@ services:
       - 'pgsql:/data/'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     stop_grace_period: 120s
 
   # Description: PostgreSQL database for code intelligence data.
@@ -553,7 +553,7 @@ services:
       - 'codeintel-db:/data/'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     stop_grace_period: 120s
 
   # Description: TimescaleDB time-series database for code insights data.
@@ -579,7 +579,7 @@ services:
       - "codeinsights-db:/var/lib/postgresql/data/"
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     stop_grace_period: 120s
 
   # Description: MinIO for storing LSIF uploads.
@@ -607,7 +607,7 @@ services:
       - 'minio:/data'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
     command: ['server', '/data']
 
   # Description: Redis for storing short-lived caches.
@@ -625,7 +625,7 @@ services:
       - 'redis-cache:/redis-data'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
   # Description: Redis for storing semi-persistent data like user sessions.
   #
   # Disk: 128GB / persistent SSD
@@ -641,7 +641,7 @@ services:
       - 'redis-store:/redis-data'
     networks:
       - sourcegraph
-    restart: on-failure
+    restart: "no"
 
 volumes:
   caddy:
